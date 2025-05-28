@@ -270,4 +270,205 @@ void sortStudentsByAverage(vector<Student>& students) {
          });
     cout << "Students sorted by average marks in descending order.\n";
 }
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+class Student {
+private:
+    string name;
+    int rollNo;
+    string course;
+    string admissionDate;
+
+public:
+    Student() : name(""), rollNo(0), course(""), admissionDate("") {}
+
+    void input() {
+        cout << "Enter Roll Number: ";
+        cin >> rollNo;
+        cin.ignore();
+        cout << "Enter Name: ";
+        getline(cin, name);
+        cout << "Enter Course: ";
+        getline(cin, course);
+        cout << "Enter Admission Date (DD/MM/YYYY): ";
+        getline(cin, admissionDate);
+    }
+
+    void display() const {
+        cout << left << setw(10) << rollNo
+             << setw(20) << name
+             << setw(15) << course
+             << setw(15) << admissionDate << endl;
+    }
+
+    int getRollNo() const {
+        return rollNo;
+    }
+
+    void modify() {
+        cout << "Modify Name (current: " << name << "): ";
+        getline(cin, name);
+        cout << "Modify Course (current: " << course << "): ";
+        getline(cin, course);
+        cout << "Modify Admission Date (current: " << admissionDate << "): ";
+        getline(cin, admissionDate);
+    }
+
+    void writeToFile(ofstream &outFile) const {
+        outFile << rollNo << endl;
+        outFile << name << endl;
+        outFile << course << endl;
+        outFile << admissionDate << endl;
+    }
+
+    void readFromFile(ifstream &inFile) {
+        inFile >> rollNo;
+        inFile.ignore();
+        getline(inFile, name);
+        getline(inFile, course);
+        getline(inFile, admissionDate);
+    }
+};
+
+vector<Student> students;
+
+void loadFromFile(const string &filename) {
+    ifstream inFile(filename);
+    if (!inFile) {
+        cout << "No existing data found. Starting fresh.\n";
+        return;
+    }
+    Student temp;
+    while (inFile.peek() != EOF) {
+        temp.readFromFile(inFile);
+        students.push_back(temp);
+    }
+    inFile.close();
+}
+
+void saveToFile(const string &filename) {
+    ofstream outFile(filename);
+    for (const auto &student : students) {
+        student.writeToFile(outFile);
+    }
+    outFile.close();
+}
+
+void addStudent() {
+    Student newStudent;
+    newStudent.input();
+    students.push_back(newStudent);
+    cout << "Student added successfully.\n";
+}
+
+void displayAllStudents() {
+    if (students.empty()) {
+        cout << "No student records available.\n";
+        return;
+    }
+    cout << left << setw(10) << "Roll No"
+         << setw(20) << "Name"
+         << setw(15) << "Course"
+         << setw(15) << "Admission Date" << endl;
+    cout << string(60, '-') << endl;
+    for (const auto &student : students) {
+        student.display();
+    }
+}
+
+void searchStudent() {
+    int roll;
+    cout << "Enter Roll Number to search: ";
+    cin >> roll;
+    cin.ignore();
+    for (const auto &student : students) {
+        if (student.getRollNo() == roll) {
+            cout << "Student Found:\n";
+            student.display();
+            return;
+        }
+    }
+    cout << "Student with Roll Number " << roll << " not found.\n";
+}
+
+void modifyStudent() {
+    int roll;
+    cout << "Enter Roll Number to modify: ";
+    cin >> roll;
+    cin.ignore();
+    for (auto &student : students) {
+        if (student.getRollNo() == roll) {
+            cout << "Current Details:\n";
+            student.display();
+            cout << "Enter new details:\n";
+            student.modify();
+            cout << "Student record updated.\n";
+            return;
+        }
+    }
+    cout << "Student with Roll Number " << roll << " not found.\n";
+}
+
+void deleteStudent() {
+    int roll;
+    cout << "Enter Roll Number to delete: ";
+    cin >> roll;
+    cin.ignore();
+    for (auto it = students.begin(); it != students.end(); ++it) {
+        if (it->getRollNo() == roll) {
+            students.erase(it);
+            cout << "Student record deleted.\n";
+            return;
+        }
+    }
+    cout << "Student with Roll Number " << roll << " not found.\n";
+}
+
+int main() {
+    const string filename = "students.txt";
+    loadFromFile(filename);
+    int choice;
+    do {
+        cout << "\n--- Student Admission System ---\n";
+        cout << "1. Add Student\n";
+        cout << "2. Display All Students\n";
+        cout << "3. Search Student\n";
+        cout << "4. Modify Student\n";
+        cout << "5. Delete Student\n";
+        cout << "6. Save and Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore();
+        switch (choice) {
+            case 1:
+                addStudent();
+                break;
+            case 2:
+                displayAllStudents();
+                break;
+            case 3:
+                searchStudent();
+                break;
+            case 4:
+                modifyStudent();
+                break;
+            case 5:
+                deleteStudent();
+                break;
+            case 6:
+                saveToFile(filename);
+                cout << "Data saved. Exiting...\n";
+                break;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 6);
+    return 0;
+}
 
