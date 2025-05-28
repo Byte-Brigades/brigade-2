@@ -472,6 +472,66 @@ int main() {
     return 0;
 }
 #include <iostream>
+#include <vector>
+using namespace std;
+
+// Define a Student structure
+struct Student {
+    int rollNumber;
+    string name;
+    float marks;
+};
+
+// Function to display a single student
+void displayStudent(const Student& s) {
+    cout << "Roll Number: " << s.rollNumber << endl;
+    cout << "Name: " << s.name << endl;
+    cout << "Marks: " << s.marks << endl;
+    cout << "--------------------------" << endl;
+}
+
+int main() {
+    vector<Student> students;
+    int choice;
+
+    do {
+        cout << "\n--- Student Management System ---" << endl;
+        cout << "1. Add Student" << endl;
+                cout << "2. Display All Students\n";
+        cout << "3. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                Student s;
+                s.input();
+                students.push_back(s);
+                break;
+            }
+            case 2: {
+                if (students.empty()) {
+                    cout << "No students to display.\n";
+                } else {
+                    cout << "\nList of Students:\n";
+                    for (const Student& s : students) {
+                        s.display();
+                    }
+                }
+                break;
+            }
+            case 3:
+                cout << "Exiting...\n";
+                break;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+         } while (choice != 3);
+
+    return 0;
+}
+
+#include <iostream>
 #include <string>
 
 using namespace std;
@@ -481,6 +541,7 @@ private:
     string name;
     int rollNumber;
     float marks;
+    int batch;
 
 public:
     // Method to input student details
@@ -491,7 +552,9 @@ public:
         cin >> rollNumber;
         cout << "Enter marks: ";
         cin >> marks;
-        cin.ignore(); // Clear the input buffer
+	cout<<"Enter batch:";
+	cin>>batch;
+	cin.ignore(); // Clear the input buffer
     }
 
     // Method to display student details
