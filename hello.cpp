@@ -471,4 +471,44 @@ int main() {
     } while (choice != 6);
     return 0;
 }
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Student {
+private:
+    string name;
+    int rollNumber;
+    float marks;
+
+public:
+    // Method to input student details
+    void getDetails() {
+        cout << "Enter student's name: ";
+        getline(cin, name);
+        cout << "Enter roll number: ";
+        cin >> rollNumber;
+        cout << "Enter marks: ";
+        cin >> marks;
+        cin.ignore(); // Clear the input buffer
+    }
+
+    // Method to display student details
+    void displayDetails() const {
+        cout << "\nStudent Details:\n";
+        cout << "Name: " << name << endl;
+        cout << "Roll Number: " << rollNumber << endl;
+        cout << "Marks: " << marks << endl;
+    }
+};
+
+int main() {
+    Student student;
+
+    student.getDetails();
+    student.displayDetails();
+
+    return 0;
+}
 
