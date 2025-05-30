@@ -269,9 +269,8 @@ void sortStudentsByAverage(vector<Student>& students) {
              return a.getAverage() > b.getAverage();
          });
     cout << "Students sorted by average marks in descending order.\n";
-}
-#include <iostream>
-#include <fstream>
+
+        #include <fstream>
 #include <vector>
 #include <string>
 #include <iomanip>
@@ -294,7 +293,7 @@ public:
         cin.ignore();
         cout << "Enter Name: ";
         getline(cin, name);
-        cout << "Enter Course: ";
+       cout << "Enter Course: ";
         getline(cin, course);
         cout << "Enter Admission Date (DD/MM/YYYY): ";
         getline(cin, admissionDate);
@@ -305,10 +304,7 @@ public:
              << setw(20) << name
              << setw(15) << course
              << setw(15) << admissionDate << endl;
-    }
 
-    int getRollNo() const {
-        return rollNo;
     }
 
     void modify() {
@@ -570,8 +566,8 @@ int main() {
     Student student;
 
     student.getDetails();
-    student.displayDetails();
-
-    return 0;
+    student.displayDetails()
+	    return 0;
 }
+
 
